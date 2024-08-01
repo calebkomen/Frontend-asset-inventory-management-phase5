@@ -9,6 +9,7 @@ import Dashboard from './pages/Dashboard';
 import Assets from './pages/Assets';
 import Requests from './pages/Requests';
 import Navbar from './components/Navbar';
+import './App.css';
 
 const App = () => {
   return (
@@ -33,7 +34,7 @@ const AppContent = () => {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard/*" element={<Dashboard />} />
         <Route path="/assets" element={<Assets />} />
         <Route path="/requests" element={<Requests />} />
         <Route path="/" element={<Login />} />
