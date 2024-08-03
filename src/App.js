@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-route
 import GlobalStyle from './styles/GlobalStyle';
 import { AuthProvider } from './context/AuthContext';
 import { AssetProvider } from './context/AssetContext';
+import { RequestProvider } from './context/RequestContext'; // Import the RequestProvider
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
@@ -15,10 +16,12 @@ const App = () => {
   return (
     <AuthProvider>
       <AssetProvider>
-        <Router>
-          <GlobalStyle />
-          <AppContent />
-        </Router>
+        <RequestProvider> {/* Wrap the application with RequestProvider */}
+          <Router>
+            <GlobalStyle />
+            <AppContent />
+          </Router>
+        </RequestProvider>
       </AssetProvider>
     </AuthProvider>
   );

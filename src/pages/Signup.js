@@ -3,6 +3,125 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import logoo from '../logoo.jpeg'; // Ensure you have a logo image in the src folder
 
+const Signup = () => {
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (password !== confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
+
+    const signupData = {
+      username,
+      email,
+      password,
+    };
+
+    try {
+      const response = await fetch('http://127.0.0.1:5000/auth/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(signupData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Signup failed');
+      }
+
+      const responseData = await response.json();
+      // Assuming the responseData contains a token and user information
+      // Save the token and user information as required
+      // Example: setUser(responseData.user, responseData.token);
+
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('Error during signup:', error);
+      alert('Error during signup, please try again.');
+    }
+  };
+
+  return (
+    <Container>
+      <LeftPanel>
+        <h1>Join us and make a difference</h1>
+      </LeftPanel>
+      <RightPanel>
+        <Form onSubmit={handleSubmit}>
+          <Logo src={logoo} alt="Logo" />
+          <label htmlFor="username">Username</label>
+          <Input 
+            type="text"
+            id="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Username"
+            required
+          />
+          <label htmlFor="email">Email</label>
+          <Input 
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
+            required
+          />
+          <label htmlFor="password">Password</label>
+          <Input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+            required
+          />
+          <label htmlFor="confirm-password">Confirm Password</label>
+          <Input
+            type="password"
+            id="confirm-password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            placeholder="Confirm Password"
+            required
+          />
+          <div>
+            <Input
+              type="checkbox"
+              id="terms"
+              checked={termsAccepted}
+              onChange={(e) => setTermsAccepted(e.target.checked)}
+              required
+            />
+            <CheckboxLabel htmlFor="terms">I agree to the <a href="/terms">Terms of Service</a> and <a href="/privacy">Privacy Policy</a></CheckboxLabel>
+          </div>
+          <Button type="submit">Sign Up</Button>
+          
+          <SignIn>
+            <span>Already have an account? </span>
+            <a href="/login">Log In</a>
+          </SignIn>
+          <Terms>
+            By clicking "Sign Up" you agree to our <a href="/terms">Terms of Service</a> and <a href="/privacy">Privacy Policy</a>.
+          </Terms>
+        </Form>
+      </RightPanel>
+    </Container>
+  );
+};
+
+export default Signup;
+
+// Styled Components
+
 const Container = styled.div`
   display: flex;
   height: 100vh;
@@ -102,85 +221,3 @@ const Terms = styled.p`
     }
   }
 `;
-
-const Signup = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [termsAccepted, setTermsAccepted] = useState(false);
-  const navigate = useNavigate();
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (password !== confirmPassword) {
-      alert("Passwords do not match!");
-      return;
-    }
-    // Replace this with actual signup logic
-    const response = { user: { name: 'User' }, token: 'token123', role: 'employee' };
-    // Assuming a signup function exists
-    // signup(response.user, response.token, response.role);
-    navigate('/dashboard');
-  };
-
-  return (
-    <Container>
-      <LeftPanel>
-        <h1>Join us and make a difference</h1>
-      </LeftPanel>
-      <RightPanel>
-        <Form onSubmit={handleSubmit}>
-          <Logo src={logoo} alt="Logo" />
-          <label htmlFor="email">Email</label>
-          <Input 
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
-            required
-          />
-          <label htmlFor="password">Password</label>
-          <Input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
-            required
-          />
-          <label htmlFor="confirm-password">Confirm Password</label>
-          <Input
-            type="password"
-            id="confirm-password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            placeholder="Confirm Password"
-            required
-          />
-          <div>
-            <Input
-              type="checkbox"
-              id="terms"
-              checked={termsAccepted}
-              onChange={(e) => setTermsAccepted(e.target.checked)}
-              required
-            />
-            <CheckboxLabel htmlFor="terms">I agree to the <a href="/terms">Terms of Service</a> and <a href="/privacy">Privacy Policy</a></CheckboxLabel>
-          </div>
-          <Button type="submit">Sign Up</Button>
-          
-          <SignIn>
-            <span>Already have an account? </span>
-            <a href="/login">Log In</a>
-          </SignIn>
-          <Terms>
-            By clicking "Sign Up" you agree to our <a href="/terms">Terms of Service</a> and <a href="/privacy">Privacy Policy</a>.
-          </Terms>
-        </Form>
-      </RightPanel>
-    </Container>
-  );
-};
-
-export default Signup;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Routes, NavLink } from 'react-router-dom';
 import styled from 'styled-components';
+import { FaHome, FaTasks, FaUser, FaClipboardList, FaPlusCircle } from 'react-icons/fa';
 import Home from './employeeDash/Home';
 import Tasks from './employeeDash/Tasks';
 import Profile from './employeeDash/Profile';
@@ -11,11 +12,26 @@ const EmployeeDashboard = () => {
   return (
     <DashboardContainer>
       <Sidebar>
-        <SidebarLink to="home">Home</SidebarLink>
-        <SidebarLink to="tasks">Tasks</SidebarLink>
-        <SidebarLink to="profile">Profile</SidebarLink>
-        <SidebarLink to="view-requests">View User Requests</SidebarLink>
-        <SidebarLink to="create-request">Create Request Form</SidebarLink>
+        <SidebarLink to="home">
+          <FaHome />
+          Home
+        </SidebarLink>
+        <SidebarLink to="tasks">
+          <FaTasks />
+          Tasks
+        </SidebarLink>
+        <SidebarLink to="profile">
+          <FaUser />
+          Profile
+        </SidebarLink>
+        <SidebarLink to="view-requests">
+          <FaClipboardList />
+          View User Requests
+        </SidebarLink>
+        <SidebarLink to="create-request">
+          <FaPlusCircle />
+          Create Request Form
+        </SidebarLink>
       </Sidebar>
       <MainContent>
         <Routes>
@@ -41,7 +57,7 @@ const DashboardContainer = styled.div`
 `;
 
 const Sidebar = styled.div`
-  width: 200px;
+  width: 250px;
   background: #c2e3be; /* Deeper green */
   padding: 20px;
   display: flex;
@@ -50,13 +66,26 @@ const Sidebar = styled.div`
 `;
 
 const SidebarLink = styled(NavLink)`
+  display: flex;
+  align-items: center;
   margin: 10px 0;
   text-decoration: none;
   color: #333;
   font-weight: bold;
+  padding: 10px;
+  border-radius: 5px;
 
   &.active {
     color: #007bff;
+    background: #e0f7fa; /* Light blue background for active link */
+  }
+
+  &:hover {
+    background: #b2dfdb; /* Light green background for hover state */
+  }
+
+  svg {
+    margin-right: 10px;
   }
 `;
 
