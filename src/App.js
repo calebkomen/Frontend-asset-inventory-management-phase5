@@ -3,20 +3,21 @@ import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-route
 import GlobalStyle from './styles/GlobalStyle';
 import { AuthProvider } from './context/AuthContext';
 import { AssetProvider } from './context/AssetContext';
-import { RequestProvider } from './context/RequestContext'; // Import the RequestProvider
+import { RequestProvider } from './context/RequestContext';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
 import Assets from './pages/Assets';
 import Requests from './pages/Requests';
 import Navbar from './components/Navbar';
+import Logout from './pages/Logout';
 import './App.css';
 
 const App = () => {
   return (
     <AuthProvider>
       <AssetProvider>
-        <RequestProvider> {/* Wrap the application with RequestProvider */}
+        <RequestProvider>
           <Router>
             <GlobalStyle />
             <AppContent />
@@ -40,6 +41,7 @@ const AppContent = () => {
         <Route path="/dashboard/*" element={<Dashboard />} />
         <Route path="/assets" element={<Assets />} />
         <Route path="/requests" element={<Requests />} />
+        <Route path="/logout" element={<Logout />} />
         <Route path="/" element={<Login />} />
       </Routes>
     </>

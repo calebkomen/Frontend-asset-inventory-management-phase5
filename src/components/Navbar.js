@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const Nav = styled.nav`
   background: #2e7d32; /* Deeper green */
@@ -20,13 +21,34 @@ const NavLink = styled(Link)`
   }
 `;
 
+const LogoutButton = styled.button`
+  background: transparent;
+  color: #fff;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 0 10px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
 const Navbar = () => {
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
   return (
     <Nav>
       <NavLink to="/dashboard">Dashboard</NavLink>
       <NavLink to="/assets">Assets</NavLink>
       <NavLink to="/requests">Requests</NavLink>
-      <NavLink to="/login">Login</NavLink>
+      <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
     </Nav>
   );
 };
