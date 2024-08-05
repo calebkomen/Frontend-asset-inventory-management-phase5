@@ -4,6 +4,87 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import logoo from '../logoo.jpeg'; // Ensure you have a logo image in the src folder
 
+const Login = () => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    try {
+      const response = await fetch('https://asset-inventory-backend.onrender.com/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const responseData = await response.json();
+      if (!response.ok) {
+        console.error('Login failed:', responseData);
+        throw new Error(responseData.message || 'Invalid login credentials');
+      }
+
+      login(responseData.user, responseData.token, responseData.role);
+      navigate('/dashboard');
+    } catch (err) {
+      console.error('Error during login:', err);
+      setError(err.message || 'Invalid login credentials');
+    }
+  };
+
+  return (
+    <Container>
+      <LeftPanel>
+        <h1>Empower the unsung heroes that support the world</h1>
+      </LeftPanel>
+      <RightPanel>
+        <Form onSubmit={handleSubmit}>
+          <Logo src={logoo} alt="Logo" />
+          {error && <ErrorMessage>{error}</ErrorMessage>}
+          <label htmlFor="username">Username</label>
+          <Input 
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Username"
+            required
+          />
+          <label htmlFor="password">Password</label>
+          <Input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+            required
+          />
+          <div>
+            <Input type="checkbox" id="remember" />
+            <label htmlFor="remember">Remember me</label>
+            <ForgotPassword href="/forgot-password">Forgot password?</ForgotPassword>
+          </div>
+          <Button type="submit">Login</Button>
+          <SSOButton type="button">Login with SSO</SSOButton>
+          <SignUp>
+            <span>Don't have an account yet? </span>
+            <a href="/signup">Sign Up</a>
+          </SignUp>
+          <Terms>
+            By clicking "Login" you agree to our <a href="/terms">Terms of Service</a> and <a href="/privacy">Privacy Policy</a>.
+          </Terms>
+        </Form>
+      </RightPanel>
+    </Container>
+  );
+};
+
+export default Login;
+
+// Styled Components
 const Container = styled.div`
   display: flex;
   height: 100vh;
@@ -126,61 +207,9 @@ const Terms = styled.p`
   }
 `;
 
-const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const { login } = useAuth();
-  const navigate = useNavigate();
+const ErrorMessage = styled.div`
+  color: red;
+  margin-bottom: 10px;
+  text-align: center;
+`;
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const response = { user: { name: 'User' }, token: 'token123', role: 'employee' };
-    login(response.user, response.token, response.role);
-    navigate('/dashboard');
-  };
-
-  return (
-    <Container>
-      <LeftPanel>
-        <h1>Empower the unsung heroes that support the world</h1>
-      </LeftPanel>
-      <RightPanel>
-        <Form onSubmit={handleSubmit}>
-          <Logo src={logoo} alt="Logo" />
-          <label htmlFor="username">Username</label>
-          <Input 
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email/Username"
-            required
-          />
-          <label htmlFor="password">Password</label>
-          <Input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
-            required
-          />
-          <div>
-            <Input type="checkbox" id="remember" />
-            <label htmlFor="remember">Remember me</label>
-            <ForgotPassword href="/forgot-password">Forgot password?</ForgotPassword>
-          </div>
-          <Button type="submit">Login</Button>
-          <SSOButton type="button">Login with SSO</SSOButton>
-          <SignUp>
-            <span>Don't have an account yet? </span>
-            <a href="/signup">Sign Up</a>
-          </SignUp>
-          <Terms>
-            By clicking "Login" you agree to our <a href="/terms">Terms of Service</a> and <a href="/privacy">Privacy Policy</a>.
-          </Terms>
-        </Form>
-      </RightPanel>
-    </Container>
-  );
-};
-
-export default Login;

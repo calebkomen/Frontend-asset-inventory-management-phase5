@@ -9,12 +9,14 @@ const Signup = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [termsAccepted, setTermsAccepted] = useState(false);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
     if (password !== confirmPassword) {
-      alert("Passwords do not match!");
+      setError("Passwords do not match!");
       return;
     }
 
@@ -25,7 +27,7 @@ const Signup = () => {
     };
 
     try {
-      const response = await fetch('http://127.0.0.1:5000/auth/signup', {
+      const response = await fetch('https://asset-inventory-backend.onrender.com/auth/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -34,18 +36,17 @@ const Signup = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Signup failed');
+        const errorData = await response.json();
+        console.error('Signup failed:', errorData);
+        throw new Error(errorData.message || 'Signup failed');
       }
 
       const responseData = await response.json();
-      // Assuming the responseData contains a token and user information
-      // Save the token and user information as required
-      // Example: setUser(responseData.user, responseData.token);
-
-      navigate('/dashboard');
+      console.log('Signup successful:', responseData);
+      navigate('/login');
     } catch (error) {
       console.error('Error during signup:', error);
-      alert('Error during signup, please try again.');
+      setError('Error during signup, please try again.');
     }
   };
 
@@ -57,6 +58,7 @@ const Signup = () => {
       <RightPanel>
         <Form onSubmit={handleSubmit}>
           <Logo src={logoo} alt="Logo" />
+          {error && <ErrorMessage>{error}</ErrorMessage>}
           <label htmlFor="username">Username</label>
           <Input 
             type="text"
@@ -220,4 +222,10 @@ const Terms = styled.p`
       text-decoration: underline;
     }
   }
+`;
+
+const ErrorMessage = styled.div`
+  color: red;
+  margin-bottom: 10px;
+  text-align: center;
 `;
