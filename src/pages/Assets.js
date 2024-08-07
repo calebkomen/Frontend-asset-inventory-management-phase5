@@ -1,30 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import AssetCard from './AssetCard'; // Adjust the path if necessary
+import { useAuth } from '../context/AuthContext'; // Adjusted import path
 
 const Assets = () => {
   const [assets, setAssets] = useState([]);
+  const { token } = useAuth();
 
   useEffect(() => {
-    const fetchAssets = async () => {
-      try {
-        const response = await fetch('http://127.0.0.1:5000/inventory/assets');
-        const data = await response.json();
-        
-        console.log('Fetched data:', data); // Log the fetched data
-
-        if (Array.isArray(data)) {
-          setAssets(data);
-        } else {
-          console.error('Expected an array but got:', data);
-        }
-      } catch (error) {
-        console.error('Error fetching assets:', error);
+    fetch('https://asset-inventory-backend.onrender.com/inventory/assets', {
+      headers: {
+        'Authorization': `Bearer ${token}`
       }
-    };
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Fetched data:', data); // Log the fetched data
 
-    fetchAssets();
-  }, []);
+      if (Array.isArray(data)) {
+        setAssets(data);
+      } else {
+        console.error('Expected an array but got:', data);
+       }
+    })
+    .catch(error => {
+      console.error('Error fetching assets:', error);
+    });
+  }, [token]);
 
   return (
     <Container>
