@@ -8,6 +8,7 @@ const Assets = () => {
   const { token } = useAuth();
 
   useEffect(() => {
+    // Fetch assets from the backend API
     fetch('https://asset-inventory-backend.onrender.com/inventory/assets', {
       headers: {
         'Authorization': `Bearer ${token}`
@@ -17,11 +18,12 @@ const Assets = () => {
     .then(data => {
       console.log('Fetched data:', data); // Log the fetched data
 
-      if (Array.isArray(data)) {
-        setAssets(data);
+      // Extract the array of assets from the response object
+      if (data && Array.isArray(data.data)) {
+        setAssets(data.data);
       } else {
         console.error('Expected an array but got:', data);
-       }
+      }
     })
     .catch(error => {
       console.error('Error fetching assets:', error);
