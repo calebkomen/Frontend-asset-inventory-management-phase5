@@ -39,7 +39,8 @@ const CreateRequestForm = () => {
     const token = localStorage.getItem('token'); // Assuming the token is stored in localStorage
 
     try {
-      const response = await axios.post('https://asset-inventory-backend.onrender.com/inventory/requests', formData, {
+      const response = await fetch('https://asset-inventory-backend.onrender.com/inventory/requests', {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
