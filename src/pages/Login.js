@@ -27,7 +27,8 @@ const Login = () => {
         throw new Error(responseData.message || 'Invalid login credentials');
       }
 
-      login(responseData.user, responseData.token, responseData.role);
+      login(responseData.user, responseData.access_token, responseData.role);
+      console.log(responseData.access_token)
       navigate('/dashboard');
     } catch (err) {
       console.error('Error during login:', err);

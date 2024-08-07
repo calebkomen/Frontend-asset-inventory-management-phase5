@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 import './assetform.css';
+import { useAuth } from '../../context/AuthContext';
 
 const AddAssetForm = () => {
   const [asset, setAsset] = useState({
     name: '',
     description: '',
-    category: ''
+    category: '',
   });
+
   const [image, setImage] = useState(null);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const { token } = useAuth();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,26 +36,16 @@ const AddAssetForm = () => {
       formData.append('image', image);
     }
 
-    formData.forEach((value, key) => {
-      console.log(`FormData Key: ${key}, Value: ${value}`);
-    });
-
     fetch('https://asset-inventory-backend.onrender.com/inventory/assets', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+        'Authorization': `Bearer ${token}`,
       },
-      body: formData
+      body:formData
     })
-    .then((response) => {
-      if (!response.ok) {
-        return response.json().then((errorData) => {
-          throw new Error(errorData.msg || 'Failed to add asset');
-        });
-      }
-      return response.json();
-    })
+    .then((response) => response.json())
     .then((data) => {
+      console.log(data);
       setSuccess('Asset added successfully');
     })
     .catch((error) => {

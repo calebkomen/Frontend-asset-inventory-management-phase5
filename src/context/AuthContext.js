@@ -7,26 +7,27 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null);
   const [role, setRole] = useState(null);
 
-  useEffect(() => {
-    // Retrieve token from local storage if available
-    const storedToken = localStorage.getItem('authToken');
-    if (storedToken) {
-      setToken(storedToken);
-    }
-  }, []);
+  // useEffect(() => {
+  //   // Retrieve token from local storage if available
+  //   const storedToken = localStorage.getItem('authToken');
+  //   if (storedToken) {
+  //     setToken(storedToken);
+  //   }
+  // }, []);
 
-  const login = (user, token, role) => {
+  const login = (user, access_token, role) => {
     setUser(user);
-    setToken(token);
+    setToken(access_token);
+    console.log(access_token)
     setRole(role);
-    localStorage.setItem('authToken', token); // Store token in local storage
+    //localStorage.setItem('authToken', token); // Store token in local storage
   };
 
   const logout = () => {
     setUser(null);
     setToken(null);
     setRole(null);
-    localStorage.removeItem('authToken'); // Remove token from local storage
+   // localStorage.removeItem('authToken'); // Remove token from local storage
   };
 
   return (

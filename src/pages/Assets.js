@@ -1,34 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import AssetCard from './AssetCard'; // Ensure this path is correct
+import AssetCard from './AssetCard'; // Adjust the path if necessary
+import { useAuth } from '../context/AuthContext'; // Adjusted import path
 
 const Assets = () => {
   const [assets, setAssets] = useState([]);
+  const { token } = useAuth();
 
   useEffect(() => {
-    const fetchAssets = async () => {
-      try {
-        const response = await fetch('http://127.0.0.1:5000/inventory/assets');
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-
-        console.log('Fetched data:', data); // Log the fetched data
-
-        // Check if data has a data property and it's an array
-        if (data.status === 'success' && Array.isArray(data.data)) {
-          setAssets(data.data);
-        } else {
-          console.error('Unexpected response structure:', data);
-        }
-      } catch (error) {
-        console.error('Error fetching assets:', error);
+    fetch('https://asset-inventory-backend.onrender.com/inventory/assets', {
+      headers: {
+        'Authorization': `Bearer ${token}`
       }
-    };
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Fetched data:', data); // Log the fetched data
 
-    fetchAssets();
-  }, []);
+      if (Array.isArray(data)) {
+        setAssets(data);
+      } else {
+        console.error('Expected an array but got:', data);
+       }
+    })
+    .catch(error => {
+      console.error('Error fetching assets:', error);
+    });
+  }, [token]);
 
   return (
     <Container>
