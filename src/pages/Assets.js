@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import AssetCard from './AssetCard'; // Adjust the path if necessary
+import AssetCard from './AssetCard'; // Ensure this path is correct
 
 const Assets = () => {
   const [assets, setAssets] = useState([]);
@@ -9,14 +9,18 @@ const Assets = () => {
     const fetchAssets = async () => {
       try {
         const response = await fetch('http://127.0.0.1:5000/inventory/assets');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
         const data = await response.json();
-        
+
         console.log('Fetched data:', data); // Log the fetched data
 
-        if (Array.isArray(data)) {
-          setAssets(data);
+        // Check if data has a data property and it's an array
+        if (data.status === 'success' && Array.isArray(data.data)) {
+          setAssets(data.data);
         } else {
-          console.error('Expected an array but got:', data);
+          console.error('Unexpected response structure:', data);
         }
       } catch (error) {
         console.error('Error fetching assets:', error);
@@ -36,7 +40,7 @@ const Assets = () => {
             name={asset.name}
             description={asset.description}
             category={asset.category}
-            image={asset.image}
+            image={asset.image_url} // Ensure correct prop name
           />
         ))}
       </AssetsContainer>
@@ -54,7 +58,7 @@ const Container = styled.div`
 
 const Title = styled.h2`
   color: #333;
-  text-align: center; /* Fixed typo from "text-align: c" to "center" */
+  text-align: center;
   margin-bottom: 20px;
 `;
 
