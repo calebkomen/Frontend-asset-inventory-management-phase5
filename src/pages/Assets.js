@@ -1,17 +1,24 @@
+// In src/pages/Assets.js
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useAuth } from '../context/AuthContext'; // Update the path accordingly
+import AssetCard from './AssetCard'; // Adjust the path if needed
 import styled from 'styled-components';
 
 const Assets = () => {
+  const { token } = useAuth(); // Assumes useAuth provides a token
   const [assets, setAssets] = useState([]);
 
   useEffect(() => {
     const fetchAssets = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:5000/inventory/assets');
-        const data = await response.json();
+        const response = await axios.get('https://asset-inventory-backend.onrender.com/inventory/assets', {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+          },
+        });
+        const data = response.data;
         
-        console.log('Fetched data:', data); // Log the fetched data
-
         if (Array.isArray(data)) {
           setAssets(data);
         } else {
@@ -23,16 +30,20 @@ const Assets = () => {
     };
 
     fetchAssets();
-  }, []);
+  }, [token]);
 
   return (
     <Container>
       <Title>Assets</Title>
       <AssetsContainer>
         {assets.map(asset => (
-          <AssetCard key={asset.id}>
-            <AssetName>{asset.name}</AssetName>
-          </AssetCard>
+          <AssetCard
+            key={asset.id}
+            name={asset.name}
+            description={asset.description}
+            category={asset.category}
+            image={asset.image}
+          />
         ))}
       </AssetsContainer>
     </Container>
@@ -41,15 +52,13 @@ const Assets = () => {
 
 export default Assets;
 
-// Styling
+// Styled components
 const Container = styled.div`
   padding: 20px;
-  background-color: #f8f8f8;
 `;
 
-const Title = styled.h2`
-  color: #333;
-  text-align: c;
+const Title = styled.h1`
+  font-size: 24px;
   margin-bottom: 20px;
 `;
 
@@ -57,20 +66,4 @@ const AssetsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-  justify-content: center;
-`;
-
-const AssetCard = styled.div`
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 200px;
-  text-align: center;
-`;
-
-const AssetName = styled.p`
-  font-size: 16px;
-  color: #555;
-  margin: 0;
 `;

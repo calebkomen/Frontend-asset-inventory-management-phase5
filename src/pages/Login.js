@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import axios from 'axios';
 import logoo from '../logoo.jpeg'; // Ensure you have a logo image in the src folder
 
 const Login = () => {
@@ -15,16 +16,13 @@ const Login = () => {
     e.preventDefault();
     setError('');
     try {
-      const response = await fetch('https://asset-inventory-backend.onrender.com/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
+      const response = await axios.post('https://asset-inventory-backend.onrender.com/auth/login', {
+        username,
+        password
       });
 
-      const responseData = await response.json();
-      if (!response.ok) {
+      const responseData = response.data;
+      if (response.status !== 200) {
         console.error('Login failed:', responseData);
         throw new Error(responseData.message || 'Invalid login credentials');
       }
@@ -212,4 +210,3 @@ const ErrorMessage = styled.div`
   margin-bottom: 10px;
   text-align: center;
 `;
-

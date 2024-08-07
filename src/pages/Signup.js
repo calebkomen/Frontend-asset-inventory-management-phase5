@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import axios from 'axios';
 import logoo from '../logoo.jpeg'; // Ensure you have a logo image in the src folder
 
 const Signup = () => {
@@ -10,6 +11,7 @@ const Signup = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -26,27 +28,22 @@ const Signup = () => {
       password,
     };
 
+    setLoading(true);
+
     try {
-      const response = await fetch('https://asset-inventory-backend.onrender.com/auth/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(signupData),
-      });
+      const response = await axios.post('https://asset-inventory-backend.onrender.com/auth/signup', signupData);
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error('Signup failed:', errorData);
-        throw new Error(errorData.message || 'Signup failed');
+      if (response.status === 200 || response.status === 201) {
+        console.log('Signup successful:', response.data);
+        navigate('/login');
+      } else {
+        throw new Error(response.data.message || 'Signup failed');
       }
-
-      const responseData = await response.json();
-      console.log('Signup successful:', responseData);
-      navigate('/login');
     } catch (error) {
       console.error('Error during signup:', error);
-      setError('Error during signup, please try again.');
+      setError(error.response?.data?.message || 'Error during signup, please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -105,7 +102,9 @@ const Signup = () => {
             />
             <CheckboxLabel htmlFor="terms">I agree to the <a href="/terms">Terms of Service</a> and <a href="/privacy">Privacy Policy</a></CheckboxLabel>
           </div>
-          <Button type="submit">Sign Up</Button>
+          <Button type="submit" disabled={loading}>
+            {loading ? 'Signing up...' : 'Sign Up'}
+          </Button>
           
           <SignIn>
             <span>Already have an account? </span>
@@ -187,6 +186,11 @@ const Button = styled.button`
 
   &:hover {
     background: #45a049;
+  }
+
+  &:disabled {
+    background: #ccc;
+    cursor: not-allowed;
   }
 `;
 

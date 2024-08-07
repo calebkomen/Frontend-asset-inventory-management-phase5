@@ -1,7 +1,5 @@
-import React, { useState } from 'react';
-import { useRequestContext } from '../../context/RequestContext';
-import { useAuth } from '../../context/AuthContext';
-import styled from 'styled-components';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const CreateRequestForm = () => {
   const [formData, setFormData] = useState({
@@ -11,32 +9,45 @@ const CreateRequestForm = () => {
     urgency: ''
   });
 
-  const { addRequest } = useRequestContext();
-  const { token } = useAuth();
+  const [assets, setAssets] = useState([]);
+
+  useEffect(() => {
+    const fetchAssets = async () => {
+      try {
+        const response = await axios.get('https://asset-inventory-backend.onrender.com/inventory/requests');
+        // Assuming the API returns an array of assets; adjust based on actual response
+        setAssets(response.data.assets || []);
+      } catch (error) {
+        console.error('Error fetching assets:', error);
+      }
+    };
+
+    fetchAssets();
+  }, []);
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [name]: value
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const token = localStorage.getItem('token'); // Assuming the token is stored in localStorage
+
     try {
-      const response = await fetch('http://127.0.0.1:5555/api/requests', {
-        method: 'POST',
+      const response = await axios.post('https://asset-inventory-backend.onrender.com/inventory/requests', formData, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(formData)
+        }
       });
 
-      const data = await response.json();
-      if (response.ok) {
-        alert('Request submitted successfully');
-        addRequest(data);
+      if (response.status === 200) {
+        alert('Request submitted successfully!');
         setFormData({
           asset_id: '',
           reason: '',
@@ -44,29 +55,29 @@ const CreateRequestForm = () => {
           urgency: ''
         });
       } else {
-        alert(`Error: ${data.message}`);
+        alert('Failed to submit request');
       }
     } catch (error) {
       console.error('Error submitting request:', error);
-      alert('An error occurred while submitting the request.');
     }
   };
 
   return (
-    <FormContainer>
-      <FormTitle>Create Request Form</FormTitle>
-      <Form onSubmit={handleSubmit}>
-        <Label htmlFor="asset_id">Asset ID:</Label>
-        <Input
-          type="text"
+    <form onSubmit={handleSubmit}>
+      <div>
+        <label htmlFor="asset_id">Asset ID</label>
+        <input
+          type="number"
           id="asset_id"
           name="asset_id"
           value={formData.asset_id}
           onChange={handleChange}
           required
         />
-        <Label htmlFor="reason">Reason:</Label>
-        <Input
+      </div>
+      <div>
+        <label htmlFor="reason">Reason</label>
+        <input
           type="text"
           id="reason"
           name="reason"
@@ -74,8 +85,10 @@ const CreateRequestForm = () => {
           onChange={handleChange}
           required
         />
-        <Label htmlFor="quantity">Quantity:</Label>
-        <Input
+      </div>
+      <div>
+        <label htmlFor="quantity">Quantity</label>
+        <input
           type="number"
           id="quantity"
           name="quantity"
@@ -83,8 +96,10 @@ const CreateRequestForm = () => {
           onChange={handleChange}
           required
         />
-        <Label htmlFor="urgency">Urgency:</Label>
-        <Select
+      </div>
+      <div>
+        <label htmlFor="urgency">Urgency</label>
+        <select
           id="urgency"
           name="urgency"
           value={formData.urgency}
@@ -95,69 +110,11 @@ const CreateRequestForm = () => {
           <option value="low">Low</option>
           <option value="medium">Medium</option>
           <option value="high">High</option>
-        </Select>
-        <Button type="submit">Submit Request</Button>
-      </Form>
-    </FormContainer>
+        </select>
+      </div>
+      <button type="submit">Submit Request</button>
+    </form>
   );
 };
 
 export default CreateRequestForm;
-
-// Styling
-const FormContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  background-color: #f8f8f8;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 400px;
-  margin: 0 auto;
-`;
-
-const FormTitle = styled.h2`
-  margin-bottom: 20px;
-  color: #333;
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-`;
-
-const Label = styled.label`
-  margin-bottom: 10px;
-  color: #555;
-`;
-
-const Input = styled.input`
-  padding: 10px;
-  margin-bottom: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 16px;
-`;
-
-const Select = styled.select`
-  padding: 10px;
-  margin-bottom: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 16px;
-`;
-
-const Button = styled.button`
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  background-color: #007bff;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-  &:hover {
-    background-color: #0056b3;
-  }
-`;
