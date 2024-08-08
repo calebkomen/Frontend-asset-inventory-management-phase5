@@ -1,28 +1,40 @@
 import React, { useEffect, useState } from 'react';
+import { useAuth } from '../../context/AuthContext';
 
-const AllocateAsset = ( { assetId } ) => {
+const AllocateAsset = () => {
   const [assets, setAssets] = useState([]);
   const [employees, setEmployees] = useState([]);
   const [allocation, setAllocation] = useState({ assetId: '', employeeId: '' });
+  const { token } = useAuth();
 
   useEffect(() => {
     const fetchAssets = async () => {
       try {
         const response = await fetch('https://asset-inventory-backend.onrender.com/inventory/assets');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
         const data = await response.json();
-        setAssets(data);
+        console.log('Fetched assets:', data); 
+        setAssets(Array.isArray(data) ? data : []); 
       } catch (error) {
         console.error('Error fetching assets:', error);
+        setAssets([]); 
       }
     };
 
     const fetchEmployees = async () => {
       try {
-        const response = await fetch('https://asset-inventory-backend.onrender.com/inventory/GET/users');
+        const response = await fetch('https://asset-inventory-backend.onrender.com/inventory/users');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
         const data = await response.json();
-        setEmployees(data);
+        console.log('Fetched employees:', data); 
+        setEmployees(Array.isArray(data) ? data : []); 
       } catch (error) {
         console.error('Error fetching employees:', error);
+        setEmployees([]); 
       }
     };
 
@@ -38,12 +50,21 @@ const AllocateAsset = ( { assetId } ) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await fetch(`https://asset-inventory-backend.onrender.com/inventory/assets/${assetId}/allocate`, {
+      const response = await fetch(`https://asset-inventory-backend.onrender.com/inventory/assets/${allocation.assetId}/allocate`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(allocation),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ employeeId: allocation.employeeId }),
       });
+
+      if (!response.ok) {
+        throw new Error('Failed to allocate asset');
+      }
+
       alert('Asset allocated successfully');
+      setAllocation({ assetId: '', employeeId: '' }); 
     } catch (error) {
       console.error('Error allocating asset:', error);
     }
