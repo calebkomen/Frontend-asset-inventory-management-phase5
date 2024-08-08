@@ -1,21 +1,33 @@
 import React, { useEffect, useState } from 'react';
+import { useAuth } from '../../context/AuthContext';
 
 const CompletedRequests = () => {
   const [requests, setRequests] = useState([]);
+  const { token } = useAuth();
 
   useEffect(() => {
     const fetchCompletedRequests = async () => {
       try {
-        const response = await fetch('https://asset-inventory-backend.onrender.com/inventory/requests/completed');
+        const response = await fetch('https://asset-inventory-backend.onrender.com/inventory/requests/completed', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,  
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
         const data = await response.json();
-        setRequests(data.filter(req => req.status === 'completed'));
+        setRequests(data.data);  
       } catch (error) {
         console.error('Error fetching completed requests:', error);
       }
     };
 
     fetchCompletedRequests();
-  }, []);
+  }, [token]);  
 
   return (
     <div>
