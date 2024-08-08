@@ -1,25 +1,50 @@
 import React, { useEffect, useState } from 'react';
+import { useAuth } from '../../context/AuthContext';
 
 const ReviewRequests = () => {
   const [requests, setRequests] = useState([]);
+  const { token } = useAuth();
 
   useEffect(() => {
     const fetchPendingRequests = async () => {
       try {
-        const response = await fetch('https://asset-inventory-backend.onrender.com/inventory/pending');
+        const response = await fetch('https://asset-inventory-backend.onrender.com/inventory/requests/pending', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,  
+            'Content-Type': 'application/json',    
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
         const data = await response.json();
-        setRequests(data.filter(req => req.status === 'pending'));
+        setRequests(data.data);  
       } catch (error) {
         console.error('Error fetching requests:', error);
       }
     };
 
     fetchPendingRequests();
-  }, []);
+  }, [token]);  
 
   const handleApprove = async (id) => {
     try {
-      await fetch(`https://asset-inventory-backend.onrender.com/inventory/requests/pending/${id}/`, { method: 'POST' });
+      const response = await fetch(`https://asset-inventory-backend.onrender.com/inventory/requests/${id}`, {
+        method: 'PATCH',  
+        headers: {
+          'Authorization': `Bearer ${token}`,  
+          'Content-Type': 'application/json',    
+        },
+        body: JSON.stringify({ status: 'approved' })  
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
       setRequests(requests.map(req => (req.id === id ? { ...req, status: 'approved' } : req)));
     } catch (error) {
       console.error('Error approving request:', error);
