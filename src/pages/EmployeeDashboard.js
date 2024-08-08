@@ -53,7 +53,7 @@ export default EmployeeDashboard;
 
 const DashboardContainer = styled.div`
   display: flex;
-  height: 100vh;
+  height: calc(100vh - 70px); /* Adjust for the height of the navbar */
 `;
 
 const Sidebar = styled.div`
@@ -63,6 +63,10 @@ const Sidebar = styled.div`
   display: flex;
   flex-direction: column;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  position: sticky; /* Make the sidebar sticky */
+  top: 10px; /* Position it just below the navbar */
+  height: calc(100vh - 70px); /* Adjust for the height of the navbar */
+  overflow-y: auto; /* Allow vertical scrolling if needed */
 `;
 
 const SidebarLink = styled(NavLink)`
@@ -93,4 +97,5 @@ const MainContent = styled.div`
   flex: 1;
   padding: 20px;
   background: #f0f0f0;
+  overflow-y: auto; /* Allow vertical scrolling for main content */
 `;
