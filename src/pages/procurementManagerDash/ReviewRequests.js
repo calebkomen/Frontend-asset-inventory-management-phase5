@@ -59,7 +59,7 @@ const ReviewRequests = () => {
         {requests.map(request => (
           <RequestItem key={request.id}>
             <RequestDetails>
-              <Detail><strong>Request ID:</strong> {request.id}</Detail>
+              <Detail><strong>Asset ID:</strong> {request.id}</Detail>
               <Detail><strong>Reason:</strong> {request.reason}</Detail>
               <Detail><strong>Quantity:</strong> {request.quantity}</Detail>
               <Detail><strong>Urgency:</strong> {request.urgency}</Detail>
