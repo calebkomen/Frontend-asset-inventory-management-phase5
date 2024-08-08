@@ -15,7 +15,7 @@ const Dashboard = () => {
   return (
     <Container>
       {role === 'admin' && <AdminDashboard />}
-      {role === 'procurement' && <ProcurementManagerDashboard />}
+      {role === 'manager' && <ProcurementManagerDashboard />}
       {role === 'employee' && <EmployeeDashboard />}
     </Container>
   );
