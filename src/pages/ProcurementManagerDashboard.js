@@ -1,31 +1,36 @@
 import React from 'react';
 import { Route, Routes, NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-import { FaPlusCircle, FaExchangeAlt, FaClipboardCheck, FaFileAlt } from 'react-icons/fa';
+import { FaPlusCircle, FaExchangeAlt, FaClipboardCheck, FaFileAlt, FaEye } from 'react-icons/fa';
 import AddAssets from './procurementManagerDash/AddAssets';
 import AllocateAssets from './procurementManagerDash/AllocateAssets';
 import ViewCompletedRequests from './procurementManagerDash/ViewCompletedRequests';
 import ReviewRequests from './procurementManagerDash/ReviewRequests';
+import ViewAssets from './procurementManagerDash/ViewAssets'; // Import the new component
 
 const ProcurementManagerDashboard = () => {
   return (
     <DashboardContainer>
       <Sidebar>
-        <SidebarLink to="add-assets">
+        <SidebarLink to="add-assets" aria-label="Add Assets">
           <FaPlusCircle />
           Add Assets
         </SidebarLink>
-        <SidebarLink to="allocate-assets">
+        <SidebarLink to="allocate-assets" aria-label="Allocate Assets">
           <FaExchangeAlt />
           Allocate Assets
         </SidebarLink>
-        <SidebarLink to="view-completed-requests">
+        <SidebarLink to="view-completed-requests" aria-label="View Completed Requests">
           <FaClipboardCheck />
           View Completed Requests
         </SidebarLink>
-        <SidebarLink to="review-requests">
+        <SidebarLink to="review-requests" aria-label="Review Requests">
           <FaFileAlt />
           Review Requests
+        </SidebarLink>
+        <SidebarLink to="view-assets" aria-label="View Assets">
+          <FaEye />
+          View Assets
         </SidebarLink>
       </Sidebar>
       <MainContent>
@@ -34,6 +39,7 @@ const ProcurementManagerDashboard = () => {
           <Route path="allocate-assets" element={<AllocateAssets />} />
           <Route path="view-completed-requests" element={<ViewCompletedRequests />} />
           <Route path="review-requests" element={<ReviewRequests />} />
+          <Route path="view-assets" element={<ViewAssets />} /> {/* New route */}
           <Route path="/" element={<AddAssets />} /> {/* Default route */}
         </Routes>
       </MainContent>
@@ -43,6 +49,7 @@ const ProcurementManagerDashboard = () => {
 
 export default ProcurementManagerDashboard;
 
+// Styled Components
 
 const DashboardContainer = styled.div`
   display: flex;

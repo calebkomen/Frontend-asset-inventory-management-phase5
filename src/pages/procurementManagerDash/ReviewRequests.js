@@ -17,10 +17,10 @@ const ReviewRequests = () => {
     fetchPendingRequests();
   }, []);
 
-  const handleApprove = async (id) => {
+  const handleApprove = async ({RequestId}) => {
     try {
-      await fetch(`https://asset-inventory-backend.onrender.com/inventory/requests/pending/${id}/`, { method: 'POST' });
-      setRequests(requests.map(req => (req.id === id ? { ...req, status: 'approved' } : req)));
+      await fetch(`https://asset-inventory-backend.onrender.com/inventory/requests/${RequestId}/`, { method: 'POST' });
+      setRequests(requests.map(req => (req.id === RequestId ? { ...req, status: 'approved' } : req)));
     } catch (error) {
       console.error('Error approving request:', error);
     }

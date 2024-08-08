@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const AllocateAsset = () => {
+const AllocateAsset = ( { assetId } ) => {
   const [assets, setAssets] = useState([]);
   const [employees, setEmployees] = useState([]);
   const [allocation, setAllocation] = useState({ assetId: '', employeeId: '' });
@@ -18,7 +18,7 @@ const AllocateAsset = () => {
 
     const fetchEmployees = async () => {
       try {
-        const response = await fetch('https://asset-inventory-backend.onrender.com/inventory/employees');
+        const response = await fetch('https://asset-inventory-backend.onrender.com/inventory/GET/users');
         const data = await response.json();
         setEmployees(data);
       } catch (error) {
@@ -38,7 +38,7 @@ const AllocateAsset = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await fetch('https://asset-inventory-backend.onrender.com/inventory/assets/allocate', {
+      await fetch(`https://asset-inventory-backend.onrender.com/inventory/assets/${assetId}/allocate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(allocation),
