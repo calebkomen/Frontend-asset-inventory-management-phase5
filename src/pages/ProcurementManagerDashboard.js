@@ -43,7 +43,6 @@ const ProcurementManagerDashboard = () => {
 
 export default ProcurementManagerDashboard;
 
-// Styled Components
 
 const DashboardContainer = styled.div`
   display: flex;
