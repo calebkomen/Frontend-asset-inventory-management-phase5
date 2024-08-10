@@ -2,13 +2,15 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import logoo from '../logoo.jpeg';
 
 const Nav = styled.nav`
   background: #2e7d32; /* Deeper green */
   color: #c2e3be;
   padding: 10px 20px;
   display: flex;
-  justify-content: flex-end; /* Right align the links */
+  justify-content: space-between; /* Space between for logo and links */
+  align-items: center; /* Center items vertically */
 `;
 
 const NavLink = styled(Link)`
@@ -34,6 +36,10 @@ const LogoutButton = styled.button`
   }
 `;
 
+const Logo = styled.img`
+  height: 50px; /* Adjust as needed */
+`;
+
 const Navbar = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();
@@ -45,10 +51,13 @@ const Navbar = () => {
 
   return (
     <Nav>
-      <NavLink to="/dashboard">Dashboard</NavLink>
-      <NavLink to="/assets">Assets</NavLink>
-      <NavLink to="/requests">Requests</NavLink>
-      <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
+      <Logo src={logoo} alt="Logo" />
+      <div>
+        <NavLink to="/dashboard">Dashboard</NavLink>
+        {/* <NavLink to="/assets">Assets</NavLink>
+        <NavLink to="/requests">Requests</NavLink> */}
+        <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
+      </div>
     </Nav>
   );
 };
