@@ -11,7 +11,7 @@ const Assets = () => {
     // Fetch assets from the backend API
     fetch('https://asset-inventory-backend.onrender.com/inventory/assets', {
       headers: {
-        'Authorization': `Bearer ${token}`
+        'Authorization': `Bearer ${token}` // Correctly formatted bearer token
       }
     })
     .then(response => response.json())
