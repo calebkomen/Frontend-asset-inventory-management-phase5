@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const AssetCard = ({ name, description, category, image }) => {
+const AssetCard = ({name, description, category, image, }) => {
   console.log('Rendering AssetCard with image URL:', image); // Log the image URL
 
   return (
@@ -10,7 +10,7 @@ const AssetCard = ({ name, description, category, image }) => {
       <AssetDetails>
         <AssetName>{name}</AssetName>
         <AssetDescription>{description}</AssetDescription>
-        <AssetCategory>{category}</AssetCategory>
+        <AssetCategory>{category}</AssetCategory> 
       </AssetDetails>
     </Card>
   );
