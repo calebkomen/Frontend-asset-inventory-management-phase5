@@ -54,58 +54,101 @@ const CreateRequestForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label htmlFor="asset_id">Asset ID</label>
-        <input
-          type="number"
-          id="asset_id"
-          name="asset_id"
-          value={formData.asset_id}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="reason">Reason</label>
-        <input
-          type="text"
-          id="reason"
-          name="reason"
-          value={formData.reason}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="quantity">Quantity</label>
-        <input
-          type="number"
-          id="quantity"
-          name="quantity"
-          value={formData.quantity}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="urgency">Urgency</label>
-        <select
-          id="urgency"
-          name="urgency"
-          value={formData.urgency}
-          onChange={handleChange}
-          required
-        >
-          <option value="">Select urgency</option>
-          <option value="low">Low</option>
-          <option value="medium">Medium</option>
-          <option value="high">High</option>
-        </select>
-      </div>
-      <button type="submit">Submit Request</button>
-    </form>
+    <div style={styles.container}>
+      <form style={styles.form} onSubmit={handleSubmit}>
+        <div style={styles.formGroup}>
+          <label style={styles.label} htmlFor="asset_id">Asset ID</label>
+          <input
+            style={styles.input}
+            type="number"
+            id="asset_id"
+            name="asset_id"
+            value={formData.asset_id}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div style={styles.formGroup}>
+          <label style={styles.label} htmlFor="reason">Reason</label>
+          <input
+            style={styles.input}
+            type="text"
+            id="reason"
+            name="reason"
+            value={formData.reason}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div style={styles.formGroup}>
+          <label style={styles.label} htmlFor="quantity">Quantity</label>
+          <input
+            style={styles.input}
+            type="number"
+            id="quantity"
+            name="quantity"
+            value={formData.quantity}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div style={styles.formGroup}>
+          <label style={styles.label} htmlFor="urgency">Urgency</label>
+          <select
+            style={styles.input}
+            id="urgency"
+            name="urgency"
+            value={formData.urgency}
+            onChange={handleChange}
+            required
+          >
+            <option value="">Select urgency</option>
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+          </select>
+        </div>
+        <button style={styles.button} type="submit">Submit Request</button>
+      </form>
+    </div>
   );
+};
+
+const styles = {
+  container: {
+    maxWidth: '600px',
+    margin: '0 auto',
+    padding: '20px'
+  },
+  form: {
+    display: 'flex',
+    flexDirection: 'column'
+  },
+  formGroup: {
+    marginBottom: '15px'
+  },
+  label: {
+    display: 'block',
+    marginBottom: '5px',
+    fontWeight: 'bold'
+  },
+  input: {
+    width: '100%',
+    padding: '8px',
+    border: '1px solid #ccc',
+    borderRadius: '4px'
+  },
+  button: {
+    padding: '10px 15px',
+    border: 'none',
+    borderRadius: '4px',
+    backgroundColor: '#2e7d32',
+    color: 'white',
+    cursor: 'pointer'
+  },
+  buttonHover: {
+    backgroundColor: '#1f434e'
+  }
 };
 
 export default CreateRequestForm;
