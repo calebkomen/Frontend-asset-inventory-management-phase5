@@ -5,45 +5,49 @@ import styled from 'styled-components';
 const AllocateAsset = () => {
   const [assets, setAssets] = useState([]);
   const [employees, setEmployees] = useState([]);
-  const [allocation, setAllocation] = useState({ assetId: '', employeeId: '' });
+  const [allocation, setAllocation] = useState({ assetId: '', userId: '' });
   const { token } = useAuth();
 
   useEffect(() => {
+    // Fetching Assets
     const fetchAssets = async () => {
       try {
-        const response = await fetch('https://asset-inventory-backend.onrender.com/inventory/assets');
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
+        const response = await fetch('https://asset-inventory-backend.onrender.com/inventory/assets', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        if (!response.ok) throw new Error('Failed to fetch assets');
         const data = await response.json();
-        setAssets(Array.isArray(data) ? data : []);
+        setAssets(Array.isArray(data.data) ? data.data : []);
       } catch (error) {
         console.error('Error fetching assets:', error);
-        setAssets([]);
       }
     };
 
+    // Fetching Employees
     const fetchEmployees = async () => {
       try {
-        const response = await fetch('https://asset-inventory-backend.onrender.com/inventory/users');
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
+        const response = await fetch('https://asset-inventory-backend.onrender.com/inventory/users', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        if (!response.ok) throw new Error('Failed to fetch employees');
         const data = await response.json();
-        setEmployees(Array.isArray(data) ? data : []);
+        setEmployees(Array.isArray(data.data) ? data.data : []);
       } catch (error) {
         console.error('Error fetching employees:', error);
-        setEmployees([]);
       }
     };
 
     fetchAssets();
     fetchEmployees();
-  }, []);
+  }, [token]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setAllocation(prevState => ({ ...prevState, [name]: value }));
+    setAllocation(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
@@ -55,15 +59,12 @@ const AllocateAsset = () => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ employeeId: allocation.employeeId }),
+        body: JSON.stringify({ user_id: allocation.userId }),
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to allocate asset');
-      }
-
+      if (!response.ok) throw new Error('Failed to allocate asset');
       alert('Asset allocated successfully');
-      setAllocation({ assetId: '', employeeId: '' });
+      setAllocation({ assetId: '', userId: '' });
     } catch (error) {
       console.error('Error allocating asset:', error);
     }
@@ -83,11 +84,11 @@ const AllocateAsset = () => {
           </Select>
         </FormGroup>
         <FormGroup>
-          <Label htmlFor="employeeId">Select Employee:</Label>
-          <Select name="employeeId" value={allocation.employeeId} onChange={handleChange} required>
+          <Label htmlFor="userId">Select Employee:</Label>
+          <Select name="userId" value={allocation.userId} onChange={handleChange} required>
             <option value="">Select an employee</option>
             {employees.map(employee => (
-              <option key={employee.id} value={employee.id}>{employee.name}</option>
+              <option key={employee.id} value={employee.id}>{employee.username}</option>
             ))}
           </Select>
         </FormGroup>
@@ -100,7 +101,6 @@ const AllocateAsset = () => {
 export default AllocateAsset;
 
 // Styled Components
-
 const Container = styled.div`
   max-width: 600px;
   margin: 0 auto;
@@ -151,11 +151,11 @@ const SubmitButton = styled.button`
   transition: background 0.3s;
 
   &:hover {
-    background: #0056b3;
+    background: #005A40; /* Updated hover color to be closer to the original button color */
   }
 
   &:focus {
-    outline: 2px solid #0056b3;
+    outline: 2px solid #005A40;
     outline-offset: 2px;
   }
 `;
