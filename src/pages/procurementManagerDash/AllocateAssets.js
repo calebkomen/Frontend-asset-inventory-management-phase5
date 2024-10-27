@@ -151,11 +151,11 @@ const SubmitButton = styled.button`
   transition: background 0.3s;
 
   &:hover {
-    background: #0056b3;
+    background: #005A40; /* Updated hover color to be closer to the original button color */
   }
 
   &:focus {
-    outline: 2px solid #0056b3;
+    outline: 2px solid #005A40;
     outline-offset: 2px;
   }
 `;

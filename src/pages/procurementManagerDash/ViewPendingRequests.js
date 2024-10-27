@@ -14,7 +14,11 @@ const ViewPendingRequests = () => {
         const response = await fetch('https://asset-inventory-backend.onrender.com/inventory/requests/pending', {
           method: 'GET',
           headers: {
+<<<<<<< HEAD
             'Authorization': `Bearer ${token}`, // Corrected syntax here
+=======
+            'Authorization': `Bearer ${token}`,
+>>>>>>> e6c7363c1fe02e9136698be57918d0932ec9c720
             'Content-Type': 'application/json',
           },
         });

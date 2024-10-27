@@ -11,6 +11,7 @@ const UpdateAssetForm = ({ assetId, assetData, onClose }) => {
     image: null,
   });
   const [loading, setLoading] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   useEffect(() => {
     if (assetData) {
@@ -26,10 +27,7 @@ const UpdateAssetForm = ({ assetId, assetData, onClose }) => {
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
     if (type === 'file') {
-      setFormData((prevState) => ({
-        ...prevState,
-        image: files[0],
-      }));
+      setSelectedFile(files[0]);
     } else {
       setFormData((prevState) => ({
         ...prevState,
@@ -62,7 +60,11 @@ const UpdateAssetForm = ({ assetId, assetData, onClose }) => {
       })
       .then(data => {
         alert('Asset updated successfully');
+<<<<<<< HEAD
         onClose(); // Close the form after a successful update
+=======
+        onClose(); // Close the form after successful update
+>>>>>>> e6c7363c1fe02e9136698be57918d0932ec9c720
       })
       .catch(error => {
         console.error('Error updating asset:', error);
@@ -132,6 +134,7 @@ const UpdateAssetForm = ({ assetId, assetData, onClose }) => {
 
 export default UpdateAssetForm;
 
+// Styled Components
 const FormContainer = styled.div`
   position: fixed;
   top: 50%;

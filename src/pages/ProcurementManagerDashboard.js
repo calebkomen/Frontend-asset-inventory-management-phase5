@@ -6,7 +6,8 @@ import AddAssets from './procurementManagerDash/AddAssets';
 import AllocateAssets from './procurementManagerDash/AllocateAssets';
 import ViewRequests from './procurementManagerDash/ViewRequests'; // Use the unified component
 import ReviewRequests from './procurementManagerDash/ReviewRequests';
-import ViewAssets from './procurementManagerDash/ViewAssets';
+import ViewAssets from './procurementManagerDash/ViewAssets'; 
+import ViewPendingRequests from './procurementManagerDash/ViewPendingRequests'; // Import the new component
 
 const ProcurementManagerDashboard = () => {
   return (
@@ -32,9 +33,9 @@ const ProcurementManagerDashboard = () => {
           <FaEye />
           View Assets
         </SidebarLink>
-        <SidebarLink to="view-requests" aria-label="View Requests">
+        <SidebarLink to="view-pending-requests" aria-label="View Pending Requests">
           <FaFileAlt />
-          View Requests
+          View Pending Requests
         </SidebarLink>
       </Sidebar>
       <MainContent>
@@ -44,6 +45,7 @@ const ProcurementManagerDashboard = () => {
           <Route path="view-requests" element={<ViewRequests />} /> {/* Updated route */}
           <Route path="review-requests" element={<ReviewRequests />} />
           <Route path="view-assets" element={<ViewAssets />} />
+          <Route path="view-pending-requests" element={<ViewPendingRequests />} /> {/* New route */}
           <Route path="/" element={<AddAssets />} /> {/* Default route */}
         </Routes>
       </MainContent>
