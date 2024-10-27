@@ -60,11 +60,9 @@ const UpdateAssetForm = ({ assetId, assetData, onClose }) => {
       })
       .then(data => {
         alert('Asset updated successfully');
-<<<<<<< HEAD
+
         onClose(); // Close the form after a successful update
-=======
         onClose(); // Close the form after successful update
->>>>>>> e6c7363c1fe02e9136698be57918d0932ec9c720
       })
       .catch(error => {
         console.error('Error updating asset:', error);
