@@ -1,70 +1,64 @@
-# Getting Started with Create React App
+# Asset Inventory System
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The Asset Inventory System is designed to help organizations efficiently manage and track their assets. This web application includes features for organizing, tracking, adding, updating, and deleting asset information. The system also supports secure user authentication with role-based permissions, providing different levels of access for admins, managers, and regular employees.
 
-## Available Scripts
+## Table of Contents
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Setup and Installation](#setup-and-installation)
+- [Usage](#usage)
+- [Folder Structure](#folder-structure)
+- [API Endpoints](#api-endpoints)
+- [Screenshots](#screenshots)
+- [Contributing](#contributing)
+- [License](#license)
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## Features
+- **Asset Management**: Allows users to add, view, update, and delete assets.
+- **User Authentication**: Provides secure access with login and registration functionality.
+- **Role-Based Access Control**:
+  - **Admin**: Full control over assets, users, and permissions.
+  - **Manager**: Can view and manage requests.
+  - **Employee**: Can view and request assets.
+- **User-Friendly Interface**: Built with React for a responsive and intuitive experience.
+- **Database-Driven**: Utilizes PostgreSQL for asset and user data management.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Technologies Used
+- **Backend**: Flask (Python), PostgreSQL
+- **Frontend**: React, Redux Toolkit for state management
+- **Other**: 
+  - Cloudinary for image storage and management
+  - Jest & Minitests for testing
+  - Figma (for wireframes)
+  - Authentication using JWT
+  - Deployed on platforms Vercel (frontend) and Render (backend)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Setup and Installation
 
-### `npm test`
+### Prerequisites
+- [Node.js](https://nodejs.org/) and npm
+- [Python 3](https://www.python.org/)
+- PostgreSQL database
+- Cloudinary account (for image management)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Backend Setup
+1. Clone the repository:
+   ```bash
+   git clone 'https://github.com/LEAKONO/Asset-inventory-backend'
+   cd asset-inventory/backend
+# Frontend Setup for Asset Inventory Management
 
-### `npm run build`
+Follow these steps to set up and run the frontend of the Asset Inventory Management project.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+# Frontend Setup for Asset Inventory Management
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Follow these steps to set up and run the frontend of the Asset Inventory Management project.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 1. Clone the Repository
+```bash
+git clone 'https://github.com/calebkomen/Frontend-asset-inventory-management-phase5'
+cd Frontend-asset-inventory-management-phase5
+npm install
+npm start

@@ -42,21 +42,23 @@ const AnavbarHeight = '60px'; // Adjust this value to match the actual height of
 const ADashboardContainer = styled.div`
   display: flex;
   height: 100vh;
+  overflow: hidden; /* Prevents scrolling at the container level */
+  position: relative; /* Ensures the content inside doesn't affect the entire page layout */
 `;
 
 const ASidebar = styled.div`
-  position: fixed; /* Fixes the sidebar in place */
-  left: 0; /* Aligns it to the left edge */
-  top: ${AnavbarHeight}; /* Position it below the navbar */
+  position: fixed;
+  left: 0;
+  top: ${AnavbarHeight};
   width: 250px;
-  height: calc(100vh - ${AnavbarHeight}); /* Full height minus the navbar height */
-  background: #c2e3be; /* Deeper green */
+  height: calc(100vh - ${AnavbarHeight});
+  background: #c2e3be;
   padding: 20px;
   display: flex;
   flex-direction: column;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-  overflow-y: auto; /* Adds scroll if content overflows */
-  z-index: 1; /* Ensures the sidebar is above other content */
+  overflow-y: auto;
+  z-index: 1;
 `;
 
 const ASidebarLink = styled(NavLink)`
@@ -84,11 +86,14 @@ const ASidebarLink = styled(NavLink)`
 `;
 
 const AMainContent = styled.div`
-  margin-left: 250px; /* Offset to make space for the fixed sidebar */
+  margin-left: 250px;
   padding: 10px;
   background: #f0f0f0;
-  height: calc(100vh - ${AnavbarHeight}); /* Ensure it covers the full height minus the navbar */
-  overflow-y: auto; /* Allows scrolling within the main content */
-  box-sizing: border-box; /* Ensure padding is included in the height */
-  position: relative; /* Ensure it positions correctly relative to the sidebar */
+  height: calc(100vh - ${AnavbarHeight});
+  overflow-y: auto;
+  box-sizing: border-box;
+  position: fixed; /* Fixes the content similar to the sidebar */
+  top: ${AnavbarHeight}; /* Aligns it below the navbar */
+  right: 0; /* Ensures it fills the remaining space to the right */
+  width: calc(100vw - 250px); /* Takes the full width minus the sidebar */
 `;

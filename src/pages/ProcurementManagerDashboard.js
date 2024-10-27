@@ -4,9 +4,9 @@ import styled from 'styled-components';
 import { FaPlusCircle, FaExchangeAlt, FaClipboardCheck, FaFileAlt, FaEye } from 'react-icons/fa';
 import AddAssets from './procurementManagerDash/AddAssets';
 import AllocateAssets from './procurementManagerDash/AllocateAssets';
-import ViewCompletedRequests from './procurementManagerDash/ViewCompletedRequests';
+import ViewRequests from './procurementManagerDash/ViewRequests'; // Use the unified component
 import ReviewRequests from './procurementManagerDash/ReviewRequests';
-import ViewAssets from './procurementManagerDash/ViewAssets'; // Import the new component
+import ViewAssets from './procurementManagerDash/ViewAssets';
 
 const ProcurementManagerDashboard = () => {
   return (
@@ -32,14 +32,18 @@ const ProcurementManagerDashboard = () => {
           <FaEye />
           View Assets
         </SidebarLink>
+        <SidebarLink to="view-requests" aria-label="View Requests">
+          <FaFileAlt />
+          View Requests
+        </SidebarLink>
       </Sidebar>
       <MainContent>
         <Routes>
           <Route path="add-assets" element={<AddAssets />} />
           <Route path="allocate-assets" element={<AllocateAssets />} />
-          <Route path="view-completed-requests" element={<ViewCompletedRequests />} />
+          <Route path="view-requests" element={<ViewRequests />} /> {/* Updated route */}
           <Route path="review-requests" element={<ReviewRequests />} />
-          <Route path="view-assets" element={<ViewAssets />} /> {/* New route */}
+          <Route path="view-assets" element={<ViewAssets />} />
           <Route path="/" element={<AddAssets />} /> {/* Default route */}
         </Routes>
       </MainContent>
@@ -54,7 +58,6 @@ export default ProcurementManagerDashboard;
 const DashboardContainer = styled.div`
   display: flex;
   height: 100vh;
-  overflow: hidden;
 `;
 
 const Sidebar = styled.div`
@@ -104,6 +107,7 @@ const MainContent = styled.div`
   flex: 1;
   padding: 20px;
   background: #f0f0f0;
+  overflow-y: auto; /* Enable vertical scrolling */
 
   @media (max-width: 768px) {
     padding: 15px;
